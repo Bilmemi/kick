@@ -1,0 +1,153 @@
+--Auto execute highly recommended (use it)
+gui = game.CoreGui.RobloxPromptGui.promptOverlay:WaitForChild("ErrorPrompt")
+
+gui.Size = UDim2.new(0, 400, 0, 230)
+
+leave = gui.MessageArea.ErrorFrame.ButtonArea.LeaveButton
+
+gui.MessageArea.MessageAreaPadding.PaddingTop = UDim.new(0,-20)
+gui.MessageArea.ErrorFrame.ErrorFrameLayout.Padding = UDim.new(0, 5)
+
+gui.MessageArea.ErrorFrame.ButtonArea.ButtonLayout.CellPadding = UDim2.new(0, 0, 0, 5)
+
+rejoin = leave:Clone()
+rejoin.Parent = leave.Parent
+rejoin.ButtonText.Text = "Nope"
+
+Players = game:GetService("Players")
+TeleportService = game:GetService("TeleportService")
+
+rejoin.MouseButton1Up:Connect(function()
+	if #Players:GetPlayers() <= 1 then
+		TeleportService:Teleport(game.PlaceId, Players.LocalPlayer)
+	else
+		TeleportService:TeleportToPlaceInstance(game.PlaceId, game.JobId, Players.LocalPlayer)
+	end
+end)
+
+-- made by rouxhaver
+-- (PUT IN YOUR EXECUTERS AUTO-EXECUTE)
+-- controls:
+-- W,S - Forward and back
+-- A,D - Turn left and right
+-- Q,E - Look up and down
+-- Z,X - Tilt Left and Right
+
+error = game.CoreGui.RobloxPromptGui.promptOverlay:WaitForChild("ErrorPrompt")
+
+error.Size = UDim2.new(0, 400, 0, 230)
+
+leave = error.MessageArea.ErrorFrame.ButtonArea.LeaveButton
+
+error.MessageArea.MessageAreaPadding.PaddingTop = UDim.new(0,-20)
+error.MessageArea.ErrorFrame.ErrorFrameLayout.Padding = UDim.new(0, 5)
+
+error.MessageArea.ErrorFrame.ButtonArea.ButtonLayout.CellPadding = UDim2.new(0, 0, 0, 5)
+
+rejoin = leave:Clone()
+rejoin.Parent = leave.Parent
+rejoin.ButtonText.Text = "im has free cam."
+
+Players = game:GetService("Players")
+TeleportService = game:GetService("TeleportService")
+
+rejoin.MouseButton1Up:Connect(function()
+
+error.Visible = false
+
+gui = game.CoreGui.RobloxPromptGui.promptOverlay
+
+viewport = Instance.new("ViewportFrame",gui)
+Camera = Instance.new("Camera",viewport)
+Camera.CFrame = workspace.CurrentCamera.CFrame
+FakeWorkspace = Instance.new("Model",viewport)
+viewport.Size = UDim2.new(1,0,1,0)
+viewport.BackgroundTransparency = 1
+fakesky = Instance.new("ImageLabel",gui)
+fakesky.ZIndex = 0
+fakesky.Size = UDim2.new(1,0,1,0)
+fakesky.BorderSizePixel = 0
+
+sky = game.Lighting:FindFirstChildWhichIsA("Sky")
+if sky then do
+		fakesky.Image = sky.SkyboxLf
+	end else
+	fakesky.Image = "rbxasset://textures/sky/sky512_lf.tex"
+end
+
+viewport.CurrentCamera = Camera
+
+for i,v in pairs(workspace:GetChildren()) do
+	if v.ClassName ~= "Camera" and v.ClassName ~= "Terrain" then
+		v.Archivable = true
+		local clone = v:Clone()
+		clone.Parent = FakeWorkspace
+	end
+end
+
+    
+--Camera Control:
+stop_loops = false
+game.UserInputService.InputBegan:Connect(function(key)
+	stop_loops = true
+	wait() wait()
+	stop_loops = false
+	
+	coroutine.wrap(function() 
+		while game.UserInputService:IsKeyDown(Enum.KeyCode.W) do
+			Camera.CFrame += Camera.CFrame.LookVector * 1
+			if stop_loops == true then break end
+			wait()
+		end
+	end)()
+	coroutine.wrap(function() 
+		while game.UserInputService:IsKeyDown(Enum.KeyCode.S) do
+			Camera.CFrame += Camera.CFrame.LookVector * -1
+			if stop_loops == true then break end
+			wait()
+		end
+	end)()
+	coroutine.wrap(function() 
+		while game.UserInputService:IsKeyDown(Enum.KeyCode.D) do
+			Camera.CFrame = Camera.CFrame * CFrame.Angles(0,math.rad(-1.5),0)
+			if stop_loops == true then break end
+			wait()
+		end
+	end)()
+	coroutine.wrap(function() 
+		while game.UserInputService:IsKeyDown(Enum.KeyCode.A) do
+			Camera.CFrame = Camera.CFrame * CFrame.Angles(0,math.rad(1.5),0)
+			if stop_loops == true then break end
+			wait()
+		end
+	end)()
+	coroutine.wrap(function() 
+		while game.UserInputService:IsKeyDown(Enum.KeyCode.E) do
+			Camera.CFrame = Camera.CFrame * CFrame.Angles(math.rad(1.5),0,0)
+			if stop_loops == true then break end
+			wait()
+		end
+	end)()
+	coroutine.wrap(function() 
+		while game.UserInputService:IsKeyDown(Enum.KeyCode.Q) do
+			Camera.CFrame = Camera.CFrame * CFrame.Angles(math.rad(-1.5),0,0)
+			if stop_loops == true then break end
+			wait()
+		end
+	end)()
+	coroutine.wrap(function() 
+		while game.UserInputService:IsKeyDown(Enum.KeyCode.Z) do
+			Camera.CFrame = Camera.CFrame * CFrame.Angles(0,0,math.rad(1.5))
+			if stop_loops == true then break end
+			wait()
+		end
+	end)()
+	coroutine.wrap(function() 
+		while game.UserInputService:IsKeyDown(Enum.KeyCode.X) do
+			Camera.CFrame = Camera.CFrame * CFrame.Angles(0,0,math.rad(-1.5))
+			if stop_loops == true then break end
+			wait()
+		end
+	end)()
+end)
+end)
